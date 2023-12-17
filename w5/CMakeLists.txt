@@ -15,3 +15,11 @@ add_executable(hw5 ${HW5_SOURCES1} ${HW5_SOURCES2})
 target_link_libraries(hw5 PUBLIC project_options project_warnings)
 target_link_libraries(hw5 PUBLIC raylib flecs)
 
+add_custom_command(TARGET hw5 POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:hw5> $<TARGET_FILE_DIR:hw5>
+  COMMAND_EXPAND_LISTS
+)
+add_custom_command(TARGET hw5 POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/assets $<TARGET_FILE_DIR:hw5>/assets
+  COMMAND_EXPAND_LISTS
+)

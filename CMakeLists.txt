@@ -25,6 +25,8 @@ enable_sanitizers(project_options)
 
 add_subdirectory(3rdParty)
 
+include_directories(".")
+
 add_subdirectory(w1)
 add_subdirectory(w2)
 add_subdirectory(w3)

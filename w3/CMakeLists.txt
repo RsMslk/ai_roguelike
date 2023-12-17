@@ -15,3 +15,11 @@ add_executable(hw3 ${HW3_SOURCES1} ${HW3_SOURCES2})
 target_link_libraries(hw3 PUBLIC project_options project_warnings)
 target_link_libraries(hw3 PUBLIC raylib flecs)
 
+add_custom_command(TARGET hw3 POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:hw3> $<TARGET_FILE_DIR:hw3>
+  COMMAND_EXPAND_LISTS
+)
+add_custom_command(TARGET hw3 POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/assets $<TARGET_FILE_DIR:hw3>/assets
+  COMMAND_EXPAND_LISTS
+)

@@ -1,44 +1,18 @@
 #include "stateMachine.h"
 
-StateMachine::~StateMachine()
+void StateMachine::enter(flecs::world& ecs, flecs::entity entity)
 {
-  for (State* state : states)
-    delete state;
-  states.clear();
-  for (auto &transList : transitions)
-    for (auto &transition : transList)
-      delete transition.first;
-  transitions.clear();
-}
-
-void StateMachine::act(float dt, flecs::world &ecs, flecs::entity entity)
-{
-  if (curStateIdx < states.size())
-  {
-    for (const std::pair<StateTransition*, int> &transition : transitions[curStateIdx])
-      if (transition.first->isAvailable(ecs, entity))
-      {
-        states[curStateIdx]->exit();
-        curStateIdx = transition.second;
-        states[curStateIdx]->enter();
-        break;
-      }
-    states[curStateIdx]->act(dt, ecs, entity);
-  }
-  else
     curStateIdx = 0;
+    if (states.size() > 0)
+        states[curStateIdx]->enter(ecs, entity);
 }
 
-int StateMachine::addState(State *st)
+void StateMachine::exit(flecs::world& ecs, flecs::entity entity)
 {
-  int idx = states.size();
-  states.push_back(st);
-  transitions.push_back(std::vector<std::pair<StateTransition*, int>>());
-  return idx;
+    states[curStateIdx]->exit(ecs, entity);
 }
 
-void StateMachine::addTransition(StateTransition *trans, int from, int to)
+void StateMachine::act(float dt, flecs::world& ecs, flecs::entity entity)
 {
-  transitions[from].push_back(std::make_pair(trans, to));
+    FiniteStateMachine::act(dt, ecs, entity);
 }
-

@@ -14,4 +14,7 @@ file(GLOB_RECURSE HW1_SOURCES2 . ./*.[ch])
 add_executable(hw1 ${HW1_SOURCES1} ${HW1_SOURCES2})
 target_link_libraries(hw1 PUBLIC project_options project_warnings)
 target_link_libraries(hw1 PUBLIC raylib flecs)
-
+add_custom_command(TARGET hw1 POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:hw1> $<TARGET_FILE_DIR:hw1>
+  COMMAND_EXPAND_LISTS
+)

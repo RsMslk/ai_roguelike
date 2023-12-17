@@ -15,3 +15,11 @@ add_executable(hw7 ${HW7_SOURCES1} ${HW7_SOURCES2})
 target_link_libraries(hw7 PUBLIC project_options project_warnings)
 target_link_libraries(hw7 PUBLIC raylib flecs)
 
+add_custom_command(TARGET hw7 POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:hw7> $<TARGET_FILE_DIR:hw7>
+  COMMAND_EXPAND_LISTS
+)
+add_custom_command(TARGET hw7 POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/assets $<TARGET_FILE_DIR:hw7>/assets
+  COMMAND_EXPAND_LISTS
+)
